@@ -1,0 +1,51 @@
+<%- include("header.ejs") %>
+
+<div class="container-fluid bg-black" style="background-color: #191919;">
+    <div class="container contact-div text-white">
+        <h1 class="animate-character">Contact Us</h1>
+        <form id="contactForm" action="/submit" method="post">
+          <label for="name">Name:</label><br />
+          <input type="text" id="name" name="name" required /><br />
+          <label for="email">Email:</label><br />
+          <input type="email" id="email" name="email" required /><br />
+          <label for="mobile">Mobile:</label><br />
+          <input type="tel" id="mobile" name="mobile" required /><br />
+          <label for="message">Message:</label><br />
+          <textarea id="message" name="message" required></textarea><br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+</div>
+
+<script>
+  document
+    .getElementById("contactForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Submit the form data asynchronously
+      fetch("/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          mobile: document.getElementById("mobile").value,
+          message: document.getElementById("message").value,
+        }),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          // Display an alert with the response message
+          alert(data);
+          // Reset the form fields
+          document.getElementById("contactForm").reset();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+</script>
+<%- include("footer.ejs") %>
